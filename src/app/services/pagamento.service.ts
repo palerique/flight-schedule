@@ -19,7 +19,7 @@ export class PagamentoService {
   }
 
   confirma(pagamento): Observable<any> {
-    return this.http.put(`${this.API}/${pagamento.id}`, pagamento);
+    return this.http.put(`${this.API}/${pagamento.id}`, null);
   }
 
   cancela(pagamento): Observable<any> {
