@@ -43,7 +43,7 @@
         <ng-template ngbTabContent>
           <section class="mb-5" *ngIf="restaurante && avaliacoes.length">
             <ngb-rating max="5" readonly="true" [(rate)]="restaurante.mediaAvaliacoes"></ngb-rating>
-            <p>{{restaurante.mediaAvaliacoes}} de {{avaliacoes.length}} {{avaliacoes.length > 1 ? 'avaliações' : 'avaliação'}}</p>
+            <p>{{restaurante.mediaAvaliacoes | number:'1.1-1' }} de {{avaliacoes.length}} {{avaliacoes.length > 1 ? 'avaliações' : 'avaliação'}}</p>
             <div *ngFor="let avaliacao of avaliacoes">
               <p>{{ avaliacao.nota }} • {{ avaliacao.comentario }}</p>
             </div>
