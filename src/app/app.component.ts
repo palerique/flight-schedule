@@ -8,19 +8,6 @@ import { AuthenticationService } from './services/authentication.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
-  title = 'Caelum Eats';
-  isNavbarCollapsed = true;
-  user: any;
-  constructor(private router: Router,
-              private authenticationService: AuthenticationService) { }
+export class AppComponent {
 
-  ngOnInit() {
-    this.authenticationService.currentUser.subscribe(user => this.user = user);
-  }
-
-  logout() {
-    this.authenticationService.logout();
-    this.router.navigate(['']);
-  }
 }

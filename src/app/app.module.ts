@@ -14,6 +14,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { AppComponent } from './app.component';
 
 import { LoginComponent } from './login/login.component';
+import { HeaderComponent } from './header/header.component';
 
 import { AdminModule } from './admin/admin.module';
 import { PedidoModule } from './pedido/pedido.module';
@@ -29,6 +30,7 @@ registerLocaleData(localeFr, 'pt');
 @NgModule({
   declarations: [
     AppComponent,
+    HeaderComponent,
     LoginComponent
   ],
   imports: [

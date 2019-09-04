@@ -38,6 +38,10 @@ export class RestauranteService {
     return this.http.get(`${this.API}/restaurantes/${restaurante.id}/formas-de-pagamento`);
   }
 
+  doUsuario(user: any): Observable<any> {
+    return this.http.get(`${this.API}/parceiros/restaurantes/do-usuario/${user.username}`);
+  }
+
   parceiroPorId(id: string): Observable<any> {
     return this.http.get(`${this.API}/parceiros/restaurantes/${id}`);
   }
