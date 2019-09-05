@@ -4,10 +4,6 @@ import { FormsModule } from '@angular/forms';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { InjectableRxStompConfig, RxStompService, rxStompServiceFactory } from '@stomp/ng2-stompjs';
-
-import { rxStompConfig } from 'src/app/rx-stomp.config';
-
 import { TextMaskModule } from 'angular2-text-mask';
 
 import { PedidoComponent } from './pedido.component';
@@ -30,17 +26,6 @@ import { PipesModule } from '../pipes/pipes.module';
     ResumoPedidoComponent,
     StatusPedidoComponent
   ],
-  imports: [CommonModule, FormsModule, NgbModule, TextMaskModule, pedidoRoutes, PipesModule],
-  providers: [
-    {
-      provide: InjectableRxStompConfig,
-      useValue: rxStompConfig
-    },
-    {
-      provide: RxStompService,
-      useFactory: rxStompServiceFactory,
-      deps: [InjectableRxStompConfig]
-    }
-  ]
+  imports: [CommonModule, FormsModule, NgbModule, TextMaskModule, pedidoRoutes, PipesModule]
 })
 export class PedidoModule { }
