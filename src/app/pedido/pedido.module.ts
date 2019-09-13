@@ -1,10 +1,14 @@
-import { NgModule } from "@angular/core";
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { TextMaskModule } from 'angular2-text-mask';
+
+import { InjectableRxStompConfig, RxStompService, rxStompServiceFactory } from '@stomp/ng2-stompjs';
+
+import { rxStompConfig } from 'src/app/rx-stomp.config';
 
 import { PedidoComponent } from './pedido.component';
 import { ListaRestaurantesComponent } from './lista-restaurantes/lista-restaurantes.component';
@@ -26,6 +30,17 @@ import { PipesModule } from '../pipes/pipes.module';
     ResumoPedidoComponent,
     StatusPedidoComponent
   ],
-  imports: [CommonModule, FormsModule, NgbModule, TextMaskModule, pedidoRoutes, PipesModule]
+  imports: [CommonModule, FormsModule, NgbModule, TextMaskModule, pedidoRoutes, PipesModule],
+  providers: [
+    {
+      provide: InjectableRxStompConfig,
+      useValue: rxStompConfig
+    },
+    {
+      provide: RxStompService,
+      useFactory: rxStompServiceFactory,
+      deps: [InjectableRxStompConfig]
+    }
+  ]
 })
 export class PedidoModule { }

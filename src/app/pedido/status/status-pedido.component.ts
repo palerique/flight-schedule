@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
+import { RxStompService} from '@stomp/ng2-stompjs';
+import { Message } from '@stomp/stompjs';
+
 import { PedidosService } from 'src/app/services/pedidos.service';
 import { AvaliacoesService } from 'src/app/services/avaliacoes.service';
 
@@ -14,6 +17,7 @@ export class StatusPedidoComponent implements OnInit {
   avaliacao: any = {};
 
   constructor(private route: ActivatedRoute,
+              private rxStompService: RxStompService,
               private router: Router,
               private pedidoService: PedidosService,
               private avaliacoesService: AvaliacoesService) {
@@ -23,6 +27,14 @@ export class StatusPedidoComponent implements OnInit {
     const pedidoId = this.route.snapshot.params.pedidoId;
     this.pedidoService.porId(pedidoId)
       .subscribe(pedido => this.pedido = pedido);
+
+    this.rxStompService.watch(`/pedidos/${pedidoId}/status`)
+      .subscribe((message: Message) => {
+        const pedido = JSON.parse(message.body);
+        this.pedido.status = pedido.status;
+      });
+
+
   }
 
   salvaAvaliacao() {

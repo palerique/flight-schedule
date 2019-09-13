@@ -1,6 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
+import { RxStompService} from '@stomp/ng2-stompjs';
+import { Message } from '@stomp/stompjs';
+
 import { PedidosService } from '../../services/pedidos.service';
 
 @Component({
@@ -12,6 +15,7 @@ export class PedidosPendentesComponent implements OnInit {
   pendentes: Array<any>;
 
   constructor(private route: ActivatedRoute,
+              private rxStompService: RxStompService,
               private pedidosService: PedidosService) {
   }
 
@@ -19,6 +23,13 @@ export class PedidosPendentesComponent implements OnInit {
     const restauranteId = this.route.snapshot.params.restauranteId;
     this.pedidosService.pendentes(restauranteId)
       .subscribe(pedidosPendentes => this.pendentes = pedidosPendentes);
+
+    this.rxStompService.watch(`/parceiros/restaurantes/${restauranteId}/pedidos/pendentes`)
+      .subscribe((message: Message) => {
+        const pedido = JSON.parse(message.body);
+        this.pendentes.push(pedido);
+      });
+
   }
 
   confirma(pedido) {
