@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RestauranteService } from 'src/app/services/restaurante.service';
 import { PedidosService } from 'src/app/services/pedidos.service';
 import { PagamentoService } from 'src/app/services/pagamento.service';
+import { FormaDePagamentoService } from 'src/app/services/forma-de-pagamento.service';
 
 @Component({
   selector: 'app-pagamento-pedido',
@@ -11,8 +12,11 @@ import { PagamentoService } from 'src/app/services/pagamento.service';
 })
 export class PagamentoPedidoComponent implements OnInit {
 
+  todasAsFormasDePagamento: Array<any>;
+  formasDePagamentoDoRestaurante: Array<any>;
+
   pedido: any;
-  formasDePagamento: Array<any>;
+
   pagamento: any = {};
 
   numeroCartaoMask = [/\d/, /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/];
@@ -20,6 +24,7 @@ export class PagamentoPedidoComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
               private router: Router,
+              private formasDePagamentoService: FormaDePagamentoService,
               private pagamentoService: PagamentoService,
               private pedidoService: PedidosService,
               private restaurantesService: RestauranteService) {
@@ -31,8 +36,10 @@ export class PagamentoPedidoComponent implements OnInit {
       .subscribe((pedido: any) => {
         this.pedido = pedido;
         this.pagamento = { pedido, valor: pedido.total };
+        this.formasDePagamentoService.todas()
+          .subscribe(formasDePagamento => this.todasAsFormasDePagamento = formasDePagamento);
         this.restaurantesService.formasDePagamento(pedido.restaurante)
-          .subscribe(formasDePagamento => this.formasDePagamento = formasDePagamento);
+          .subscribe(formasDePagamento => this.formasDePagamentoDoRestaurante = formasDePagamento);
       });
   }
 
@@ -51,6 +58,11 @@ export class PagamentoPedidoComponent implements OnInit {
   cancelaPagamento() {
     this.pagamentoService.cancela(this.pagamento)
       .subscribe(() => this.router.navigateByUrl(``));
-}
+  }
+
+  nomeFormaDePagamento(idFormaDePagamento) {
+    const forma = this.todasAsFormasDePagamento.find(formaDePagamento => formaDePagamento.id === idFormaDePagamento);
+    return forma ? forma.nome : '';
+  }
 
 }

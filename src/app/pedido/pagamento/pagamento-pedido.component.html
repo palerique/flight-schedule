@@ -7,8 +7,8 @@
       <h3>Dados do pagamento</h3>
       <div class="form-group">
         <label for="formaDePagamento">Forma de pagamento</label>
-        <select class="form-control" required id="formaDePagamento" name="formaDePagamento" [(ngModel)]="pagamento.formaDePagamento">
-          <option *ngFor="let forma of formasDePagamento" [ngValue]="forma">{{ forma.nome }}</option>
+        <select class="form-control" required id="formaDePagamentoId" name="formaDePagamentoId" [(ngModel)]="pagamento.formaDePagamentoId">
+          <option *ngFor="let forma of formasDePagamentoDoRestaurante" [ngValue]="forma">{{ nomeFormaDePagamento(forma) }}</option>
         </select>
       </div>
       <div class="form-group">

@@ -9,9 +9,9 @@ import { FormaDePagamentoService } from 'src/app/services/forma-de-pagamento.ser
 export class FormasDePagamentoComponent implements OnInit {
 
   @Input() restaurante: any;
-  todasAsFormasDePagamento: Array<any>;
-  formasDePagamentoDoRestaurante: Array<any>;
-  formaDePagamentoParaAdicionar: any = {};
+  todasAsFormasDePagamento: Array<any> = [];
+  idsFormasDePagamentoDoRestaurante: Array<any>;
+  formaDePagamentoParaAdicionar: any = null;
 
   constructor(private formaDePagamentoService: FormaDePagamentoService) {
   }
@@ -21,29 +21,38 @@ export class FormasDePagamentoComponent implements OnInit {
       .subscribe(todasAsFormas => this.todasAsFormasDePagamento = todasAsFormas);
 
     this.formaDePagamentoService.doRestaurante(this.restaurante)
-      .subscribe((formasDePagamento: any) => this.formasDePagamentoDoRestaurante = formasDePagamento);
+      .subscribe((idsFormasDePagamento: any) => {
+        this.idsFormasDePagamentoDoRestaurante = idsFormasDePagamento;
+        this.idsFormasDePagamentoDoRestaurante
+            .sort((a, b) => this.nomeFormaDePagamento(a).localeCompare(this.nomeFormaDePagamento(b)));
+      });
   }
 
   adicionaFormaDePagamentoAoRestaurante() {
     if (this.formaDePagamentoParaAdicionar) {
-      const jaTem = this.formasDePagamentoDoRestaurante.some(f => f.id === this.formaDePagamentoParaAdicionar.id);
+      const idFormaDePagamentoParaAdicionar = this.formaDePagamentoParaAdicionar.id;
+      const jaTem = this.idsFormasDePagamentoDoRestaurante.some(id => id === idFormaDePagamentoParaAdicionar);
       if (!jaTem) {
-        this.formaDePagamentoParaAdicionar.restaurante = this.restaurante;
-        this.formaDePagamentoService.adicionaAoRestaurante(this.formaDePagamentoParaAdicionar)
+        this.formaDePagamentoService.adicionaAoRestaurante(idFormaDePagamentoParaAdicionar, this.restaurante)
           .subscribe(() => {
-              this.formasDePagamentoDoRestaurante.push(this.formaDePagamentoParaAdicionar);
-              this.formasDePagamentoDoRestaurante.sort((a,b) => a.nome.localeCompare(b.nome));
-              this.formaDePagamentoParaAdicionar = {};
+              this.idsFormasDePagamentoDoRestaurante.push(idFormaDePagamentoParaAdicionar);
+              this.idsFormasDePagamentoDoRestaurante
+                  .sort((a, b) => this.nomeFormaDePagamento(a).localeCompare(this.nomeFormaDePagamento(b)));
+              this.formaDePagamentoParaAdicionar = null;
           });
       }
     }
   }
 
-  remove(formaDePagamento) {
-    formaDePagamento.restaurante = this.restaurante;
-    this.formaDePagamentoService.removeDoRestaurante(formaDePagamento)
+  remove(idFormaDePagamento) {
+    this.formaDePagamentoService.removeDoRestaurante(idFormaDePagamento, this.restaurante)
       .subscribe(() => {
-        this.formasDePagamentoDoRestaurante = this.formasDePagamentoDoRestaurante.filter(f => f !== formaDePagamento);
+        this.idsFormasDePagamentoDoRestaurante = this.idsFormasDePagamentoDoRestaurante.filter(f => f !== idFormaDePagamento);
       });
+  }
+
+  nomeFormaDePagamento(idFormaDePagamento) {
+    const forma = this.todasAsFormasDePagamento.find(formaDePagamento => formaDePagamento.id === idFormaDePagamento);
+    return forma ? forma.nome : '';
   }
 }

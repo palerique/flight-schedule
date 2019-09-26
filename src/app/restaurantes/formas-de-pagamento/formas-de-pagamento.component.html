@@ -6,9 +6,9 @@
 </form>
 
 <ul class="list-inline">
-  <li class="list-inline-item border rounded p-2" *ngFor="let formaDePagamento of formasDePagamentoDoRestaurante">
-    <span>{{ formaDePagamento.nome }}</span>
-    <button class="close text-danger ml-2" (click)="remove(formaDePagamento)">
+  <li class="list-inline-item border rounded p-2" *ngFor="let idFormaDePagamento of idsFormasDePagamentoDoRestaurante">
+    <span>{{ nomeFormaDePagamento(idFormaDePagamento) }}</span>
+    <button class="close text-danger ml-2" (click)="remove(idFormaDePagamento)">
         <span>&times;</span>
     </button>
   </li>

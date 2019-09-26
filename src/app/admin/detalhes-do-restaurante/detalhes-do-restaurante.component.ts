@@ -13,6 +13,7 @@ export class DetalhesDoRestauranteComponent implements OnChanges {
 
   @Input() restaurante: any;
   formasDePagamento: Array<any>;
+  todasAsFormas: Array<any>;
   horariosDeFuncionamento: Array<any>;
   cardapio: any;
 
@@ -23,14 +24,23 @@ export class DetalhesDoRestauranteComponent implements OnChanges {
   }
 
   ngOnChanges() {
-    this.formaDePagamentoService.doRestaurante(this.restaurante)
-      .subscribe(formas => this.formasDePagamento = formas);
+    this.formaDePagamentoService.todas()
+      .subscribe(todasAsFormas => {
+        this.todasAsFormas = todasAsFormas;
+        this.formaDePagamentoService.doRestaurante(this.restaurante)
+          .subscribe(formas => this.formasDePagamento = formas);
+      });
 
     this.horarioDeFuncionamentoService.todosDoRestaurante(this.restaurante)
       .subscribe(horarios => this.horariosDeFuncionamento = horarios);
 
     this.cardapioService.doRestaurante(this.restaurante)
       .subscribe(cardapio => this.cardapio = cardapio);
+  }
+
+  nomeFormaDePagamento(idFormaDePagamento) {
+    const forma = this.todasAsFormas.find(formaDePagamento => formaDePagamento.id === idFormaDePagamento);
+    return forma ? forma.nome : '';
   }
 
 }

@@ -9,7 +9,8 @@ import { environment } from 'src/environments/environment';
 })
 export class FormaDePagamentoService {
 
-  private API = environment.baseUrl;
+  private API = environment.baseUrl + '/administrativo';
+  private RESTAURANTE_API = environment.baseUrl;
 
   constructor(private http: HttpClient) {
   }
@@ -34,15 +35,15 @@ export class FormaDePagamentoService {
   }
 
   doRestaurante(restaurante): Observable<any> {
-    return this.http.get(`${this.API}/restaurantes/${restaurante.id}/formas-de-pagamento`);
+    return this.http.get(`${this.RESTAURANTE_API}/restaurantes/${restaurante.id}/formas-de-pagamento`);
   }
 
-  adicionaAoRestaurante(formaDePagamento): Observable<any> {
-    return this.http.post(`${this.API}/parceiros/restaurantes/${formaDePagamento.restaurante.id}/formas-de-pagamento`, formaDePagamento);
+  adicionaAoRestaurante(idFormaDePagamento, restaurante): Observable<any> {
+    return this.http.post(`${this.RESTAURANTE_API}/parceiros/restaurantes/${restaurante.id}/formas-de-pagamento`, idFormaDePagamento);
   }
 
-  removeDoRestaurante(formaDePagamento) {
-    return this.http.delete(`${this.API}/parceiros/restaurantes/${formaDePagamento.restaurante.id}/formas-de-pagamento/${formaDePagamento.id}`);
+  removeDoRestaurante(idFormaDePagamento, restaurante) {
+    return this.http.delete(`${this.RESTAURANTE_API}/parceiros/restaurantes/${restaurante.id}/formas-de-pagamento/${idFormaDePagamento}`);
   }
 
 

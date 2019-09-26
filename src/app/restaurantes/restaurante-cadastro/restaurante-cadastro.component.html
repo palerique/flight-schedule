@@ -33,7 +33,7 @@
 
   <div class="form-group">
     <label for="tipoDeCozinha">Tipo de cozinha</label>
-    <select class="form-control" [(ngModel)]="restaurante.tipoDeCozinha.id" required id="tipoDeCozinha"
+    <select class="form-control" [(ngModel)]="restaurante.tipoDeCozinhaId" required id="tipoDeCozinha"
       name="tipoDeCozinha">
       <option *ngFor="let tipo of tiposDeCozinha" [value]="tipo.id">{{tipo.nome}}</option>
     </select>

@@ -23,8 +23,8 @@
 </dl>
 <div *ngIf="formasDePagamento?.length">
   <h4>Formas de pagamento</h4>
-  <ul class="list-unstyled" *ngFor="let forma of formasDePagamento">
-    <li>{{ forma.nome }}</li>
+  <ul class="list-unstyled">
+    <li *ngFor="let forma of formasDePagamento">{{ nomeFormaDePagamento(forma) }}</li>
   </ul>
 </div>
 <div *ngIf="horariosDeFuncionamento?.length">
