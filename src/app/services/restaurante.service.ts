@@ -40,7 +40,7 @@ export class RestauranteService {
   }
 
   doUsuario(user: any): Observable<any> {
-    return this.http.get(`${this.API}/parceiros/restaurantes/do-usuario/${user.username}`);
+    return this.http.get(`${this.API}/parceiros/restaurantes/do-usuario/${user.userId}`);
   }
 
   parceiroPorId(id: string): Observable<any> {
